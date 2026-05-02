@@ -22,7 +22,7 @@ let gameOver = false;
 
 
 function placeCell() {
-    if (gameOver) {
+    if (gameOver || !gameStarted) {
         return;
     }
 
@@ -72,6 +72,7 @@ function restartGame() {
 let startButton;
 let scoreO = 0;
 let scoreX = 0;
+let gameStarted = false;
 
 // START BUTTON
 window.onload = function () {
@@ -82,23 +83,24 @@ window.onload = function () {
     }
 
     console.log("Game loaded");
-    console.log("Start button:", startButton);
 
     restartGameButton = document.getElementById("game-restart-button");
     restartGameButton.addEventListener("click", restartGame);
 
-    // === TAMBAHAN START FIX ===
     startButton = document.getElementById("start-button");
     console.log("Start button:", startButton);
-    toggleBoard(true);
+    
+    
+    toggleBoard(false);
 
     startButton.onclick = function () {
         console.log("START CLICKED");
-        toggleBoard(true);
+        gameStarted = true; 
+        toggleBoard(true); 
     };
+    
     updateTurnDisplay();
-
-}; 
+};
 
 // enable / disable board
 function toggleBoard(state) {
@@ -173,5 +175,9 @@ let originalRestartGame = restartGame;
 restartGame = function () {
     originalRestartGame();
     currPlayer = playerO;
+    
+    gameStarted = false; 
+    toggleBoard(false); 
+    
     updateTurnDisplay();
 };
