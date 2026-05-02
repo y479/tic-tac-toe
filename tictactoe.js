@@ -176,8 +176,8 @@ restartGame = function () {
     originalRestartGame();
     currPlayer = playerO;
     
-    gameStarted = false; 
-    toggleBoard(false); 
+    gameStarted = true; 
+    toggleBoard(truegit); 
     
     updateTurnDisplay();
 };
