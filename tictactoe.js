@@ -47,6 +47,7 @@ function placeCell() {
     }
 }
 
+//CHECK WINNER
 function checkWinner() {
 
     for (let winCondition of winningConditions) {
@@ -91,19 +92,15 @@ let gameStarted = false;
 // START BUTTON
 window.onload = function () {
     gameCells = document.getElementsByClassName("game-cell");
-
     for (let cell of gameCells) {
         cell.addEventListener("click", placeCell);
     }
 
     console.log("Game loaded");
-
     restartGameButton = document.getElementById("game-restart-button");
     restartGameButton.addEventListener("click", restartGame);
-
     startButton = document.getElementById("start-button");
     console.log("Start button:", startButton);
-    
     
     toggleBoard(false);
 
@@ -142,6 +139,7 @@ function updateScore(winner) {
     }
 }
 
+//RESTART GAME
 function restartGame() {
     gameOver = false;
     gameBoard = ["", "", "", "", "", "", "", "", ""];
