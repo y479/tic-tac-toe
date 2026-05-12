@@ -20,9 +20,8 @@ let winningConditions = [
 let restartGameButton;
 let gameOver = false;
 
-
+//PLACECELL
 function placeCell() {
-
     if (gameOver || !gameStarted) {
         return;
     }
@@ -51,7 +50,6 @@ function placeCell() {
 function checkWinner() {
 
     for (let winCondition of winningConditions) {
-
         let a = gameBoard[winCondition[0]];
         let b = gameBoard[winCondition[1]];
         let c = gameBoard[winCondition[2]];
@@ -75,6 +73,7 @@ function checkWinner() {
     }
 }
 
+//CHECHK DRAW
 function checkDraw() {
     if (gameOver) return;
     let isDraw = gameBoard.every(cell => cell !== "");
