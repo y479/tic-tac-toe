@@ -27,22 +27,18 @@ function placeCell() {
     }
 
     const index = parseInt(this.getAttribute("data-cell-index"));
-
     if (gameBoard[index] !== "") {
         return;
     }
 
     gameBoard[index] = currPlayer;
     this.innerText = currPlayer;
-
     checkWinner();
     checkDraw();
-
     if (!gameOver) {
         currPlayer = (currPlayer == playerO)
             ? playerX
             : playerO;
-
         updateTurnDisplay();
     }
 }
@@ -64,7 +60,6 @@ function checkWinner() {
             }
 
             updateScore(a);
-
             document.getElementById("player-turn")
                 .innerText = "Winner: " + a;
             gameOver = true;
@@ -101,9 +96,7 @@ window.onload = function () {
     restartGameButton.addEventListener("click", restartGame);
     startButton = document.getElementById("start-button");
     console.log("Start button:", startButton);
-    
     toggleBoard(false);
-
     startButton.onclick = function () {
         console.log("START CLICKED");
         gameStarted = true; 
@@ -113,7 +106,7 @@ window.onload = function () {
     updateTurnDisplay();
 };
 
-// enable / disable board
+// ENABLE / DISABLE BOARD
 function toggleBoard(state) {
     if (!gameCells) return;
 
