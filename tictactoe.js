@@ -22,52 +22,82 @@ let gameOver = false;
 
 
 function placeCell() {
+
     if (gameOver || !gameStarted) {
         return;
     }
 
     const index = parseInt(this.getAttribute("data-cell-index"));
+
     if (gameBoard[index] !== "") {
         return;
     }
 
-    gameBoard[index] = currPlayer; //mark the board
-    this.innerText = currPlayer;   //mark the board on html    
+    gameBoard[index] = currPlayer;
+    this.innerText = currPlayer;
 
-    //change players
-    currPlayer = (currPlayer == playerO) ? playerX : playerO;
-
-    //check winner
     checkWinner();
+    checkDraw();
+
+    if (!gameOver) {
+        currPlayer = (currPlayer == playerO)
+            ? playerX
+            : playerO;
+
+        updateTurnDisplay();
+    }
 }
 
 function checkWinner() {
+
     for (let winCondition of winningConditions) {
+
         let a = gameBoard[winCondition[0]];
         let b = gameBoard[winCondition[1]];
         let c = gameBoard[winCondition[2]];
 
         if (a == b && b == c && a != "") {
-            //update styling for winning cells
+
             for (let i = 0; i < gameBoard.length; i++) {
+
                 if (winCondition.includes(i)) {
-                    gameCells[i].classList.add("winning-game-cell");
+                    gameCells[i].classList.add(
+                        "winning-game-cell"
+                    );
                 }
             }
+
+            updateScore(a);
+
+            document.getElementById("player-turn")
+                .innerText = "Winner: " + a;
+
             gameOver = true;
+
             return;
         }
     }
 }
 
 function restartGame() {
+
     gameOver = false;
+
     gameBoard = ["", "", "", "", "", "", "", "", ""];
+
+    currPlayer = playerO;
+
     for (let cell of gameCells) {
+
         cell.innerText = "";
-        cell.classList.remove("winning-game-cell");
+
+        cell.classList.remove(
+            "winning-game-cell"
+        );
     }
-}   
+
+    updateTurnDisplay();
+}
 
 let startButton;
 let scoreO = 0;
@@ -128,18 +158,6 @@ function updateScore(winner) {
     }
 }
 
-// HOOK placeCell 
-let originalPlaceCell = placeCell;
-placeCell = function () {
-    originalPlaceCell.call(this); 
-
-    if (!gameOver) {
-        updateTurnDisplay();
-    }
-
-    checkDraw();
-};
-
 // DRAW DETECTION
 function checkDraw() {
     if (gameOver) return;
@@ -147,37 +165,7 @@ function checkDraw() {
     let isDraw = gameBoard.every(cell => cell !== "");
 
     if (isDraw) {
-        document.getElementById("player-turn").innerText = "Draw!";
+        document.getElementById("player-turn").innerText = "Game Draw!";
         gameOver = true;
     }
 }
-
-// HOOK checkWinner 
-let originalCheckWinner = checkWinner;
-checkWinner = function () {
-    originalCheckWinner();
-
-    for (let condition of winningConditions) {
-        let a = gameBoard[condition[0]];
-        let b = gameBoard[condition[1]];
-        let c = gameBoard[condition[2]];
-
-        if (a === b && b === c && a !== "") {
-            updateScore(a);
-            document.getElementById("player-turn").innerText = "Winner: " + a;
-            break;
-        }
-    }
-};
-
-// HOOK restartGame 
-let originalRestartGame = restartGame;
-restartGame = function () {
-    originalRestartGame();
-    currPlayer = playerO;
-    
-    gameStarted = true; 
-    toggleBoard(true); 
-    
-    updateTurnDisplay();
-};
